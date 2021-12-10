@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="Board">
+ <insert id="save" parameterType="bdto">
+		insert into boardH_table(b_title,m_id,b_contents,b_date,b_filename)
+  			value(#{b_title},#{m_id},#{b_contents},now(),#{b_filename})
+	</insert>
+  	
+	<update id="update" parameterType="bdto">
+		update boardH_table set b_title=#{b_title}, b_contents=#{b_contents} where b_number=#{b_number}
+	</update>
+
+	<select id ="findAll" resultType="bdto">
+  		select * from boardH_table
+  	</select>
+  	
+	<select id="pagingList" parameterType="java.util.HashMap" resultType="bdto">
+		select * from boardH_table order by b_number desc limit #{start}, #{limit}
+	</select>
+
+	<select id="count" resultType="int">
+		select count(b_number) from boardH_table
+	</select>
+	
+	<select id="findById" parameterType="long" resultType="bdto">
+  		select * from boardH_table where b_number=#{b_number}	
+  	</select>
+  	
+  	<update id="hits" parameterType="long">
+  		update boardH_table set b_hits=b_hits+1 where b_number=#{b_number} 
+  	</update>
+
+	<delete id="delete" parameterType="long">
+  		delete from boardH_table where b_number=#{b_number}
+  	</delete>
+	
+	<select id="search" parameterType="java.util.HashMap" resultType="bdto">
+		select * from boardH_table 			
+		<include refid="search"></include>
+	</select>
+	
+	<sql id="search">
+		<choose>
+			<when test="type=='b_title'">
+				where b_title like concat('%', #{word}, '%') 
+			</when>
+			<when test="type=='m_id'">
+				where m_id like concat('%', #{word}, '%') 
+			</when>
+		</choose>
+	</sql> 
+	
+<!-- 	 	<select id="search" parameterType="java.util.HashMap" resultType="bdto">
+		select * from boardH_table where ${type} like concat('%', #{word}, '%')	
+	</select>  -->
+	
+ </mapper>

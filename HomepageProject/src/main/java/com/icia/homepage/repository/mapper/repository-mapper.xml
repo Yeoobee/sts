@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="Homepage">
+ <insert id="signup" parameterType="hdto">
+		insert into member_table(m_id,m_password,m_name,m_email,m_phone,m_filename)
+  			value(#{m_id},#{m_password},#{m_name},#{m_email},#{m_phone},#{m_filename})
+	</insert>
+	
+	<select id ="idDuplicate" parameterType="String" resultType="String">
+		select * from member_table where m_id=#{m_id}
+	</select>
+ 	
+ 	<select id ="login" parameterType="hdto" resultType="hdto">
+		select * from member_table where m_id=#{m_id} and m_password=#{m_password}
+	</select>
+	
+ 	<select id ="memberList" resultType="hdto">
+		select * from member_table
+	</select>
+	
+	<delete id="delete" parameterType="long">
+		delete from member_table where m_number=#{m_number}
+	</delete>
+	
+	<select id="findById" parameterType="long" resultType="hdto">
+		select * from member_table where m_number=#{m_number}
+	</select>
+	
+	<update id="update" parameterType="hdto">
+		update member_table set m_email=#{m_email}, m_phone=#{m_phone},m_filename=#{m_filename} where m_number=#{m_number}
+	</update>
+	
+
+	
+ </mapper>
